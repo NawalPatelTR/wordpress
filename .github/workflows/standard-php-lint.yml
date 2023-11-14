@@ -3,10 +3,10 @@ name: PHP Lint
 on:
   push:
     branches:
-      - php8.2_linting
+      - master
   pull_request:
     branches:
-      - development
+      - master
 
 jobs:
   lint:

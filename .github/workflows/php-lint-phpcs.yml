@@ -3,10 +3,10 @@ name: WordPress PHP Linting with PHP Code Sniffer
 on:
   push:
     branches:
-      - php8.2_linting
+      - master
   pull_request:
     branches:
-      - development
+      - master
 
 jobs:
   lint-wordpress-php:
