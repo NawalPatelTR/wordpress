@@ -1,0 +1,50 @@
+name: PHP Lint
+
+on:
+  push:
+    branches:
+      - php8.2_linting
+  pull_request:
+    branches:
+      - development
+
+jobs:
+  lint:
+    name: Lint PHP files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Find and lint PHP files
+        run: |
+          # Find PHP files and lint them
+          find . -type f -name "*.php" | while read -r file; do
+            php -l "$file"
+            if [ $? -ne 0 ]; then
+              echo "Linting failed for $file"
+              exit 1
+            fi
+          done
+
+      - name: Create linting report
+        run: |
+          # Redirect linting results to a report file
+          find . -type f -name "*.php" | while read -r file; do
+            php -l "$file"
+            if [ $? -ne 0 ]; then
+              echo "Linting failed for $file" >> lint-report.txt
+            fi
+          done
+
+      - name: Upload linting report
+        uses: actions/upload-artifact@v2
+        with:
+          name: php-lint-report
+          path: php-lint-report.txt
